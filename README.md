@@ -1,1 +1,1 @@
-# Global-News-Financial-Market-Impact-Analytics
+# Global-Gas-Market-Impact-Analytics
