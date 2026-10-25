@@ -5,6 +5,8 @@ Global Gas Market Impact Analytics
 
 ## Purpose
 Implement the kubernetes module for the Big Data Engineering pipeline.
+(Deploy application on kubernetes cluster)
+
 
 ## Tasks
 - [ ] Design the module
@@ -14,4 +16,8 @@ Implement the kubernetes module for the Big Data Engineering pipeline.
 - [ ] Create pull request into main
 
 ## Status
-Not started
+
+
+
+
+
