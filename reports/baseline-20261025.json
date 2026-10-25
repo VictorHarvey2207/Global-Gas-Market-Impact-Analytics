@@ -1,0 +1,165 @@
+{
+  "run_id": "baseline-20261025",
+  "source_repository": "https://github.com/KietLe2504/Project_DeepLearning_2025_1",
+  "source_commit": "8474917c5c62c1bb9c8acc3f5543b56e94f72604",
+  "source_file": "oil_data.csv",
+  "source_sha256": "3a89eea98b15340be4146a275e24e5683c93ec9bcd63d43ae96fbcdec115add2",
+  "runtime": {
+    "spark": "4.0.1",
+    "python": "3.10.12",
+    "java": "17.0.16",
+    "numpy": "1.26.4"
+  },
+  "config": {
+    "target": "cushing_crude_oil_price",
+    "horizon_sessions": 1,
+    "price_lags": [
+      1,
+      2,
+      5,
+      10
+    ],
+    "rolling_windows": [
+      5,
+      10,
+      20
+    ],
+    "exogenous_lag_sessions": 1,
+    "forward_fill_sessions": 5,
+    "train_fraction": 0.7,
+    "validation_fraction": 0.15,
+    "linear_reg_params": [
+      0.0,
+      0.1,
+      1.0
+    ],
+    "linear_elastic_net_params": [
+      0.0,
+      0.5
+    ],
+    "tree_depths": [
+      3,
+      5,
+      8
+    ],
+    "tree_min_instances": [
+      10,
+      30
+    ],
+    "tree_max_bins": 32,
+    "seed": 42,
+    "spark_master": "local[2]",
+    "shuffle_partitions": 4
+  },
+  "splits": {
+    "train": {
+      "rows": 4015,
+      "first_target_date": "2003-01-31",
+      "last_target_date": "2019-01-24"
+    },
+    "validation": {
+      "rows": 860,
+      "first_target_date": "2019-01-25",
+      "last_target_date": "2022-06-23"
+    },
+    "test": {
+      "rows": 862,
+      "first_target_date": "2022-06-24",
+      "last_target_date": "2025-11-26"
+    }
+  },
+  "feature_names": [
+    "price_now",
+    "price_lag_1",
+    "price_lag_2",
+    "price_lag_5",
+    "price_lag_10",
+    "price_mean_5",
+    "price_std_5",
+    "price_mean_10",
+    "price_std_10",
+    "price_mean_20",
+    "price_std_20",
+    "price_change_1",
+    "dow_jones_adj_close_price_available",
+    "nasdaq_adj_close_price_available",
+    "sp_adj_close_price_available",
+    "usd_to_uk_exchange_rate_available",
+    "federal_funds_rate_available",
+    "bank_prime_loan_rate_available",
+    "treasury_1_year_rate_available",
+    "breakeven_inflation_5_year_rate_available",
+    "dow_jones_adj_close_price_missing",
+    "nasdaq_adj_close_price_missing",
+    "sp_adj_close_price_missing",
+    "usd_to_uk_exchange_rate_missing",
+    "federal_funds_rate_missing",
+    "bank_prime_loan_rate_missing",
+    "treasury_1_year_rate_missing",
+    "breakeven_inflation_5_year_rate_missing"
+  ],
+  "metrics": {
+    "units": "USD/barrel",
+    "selection_metric": "validation_rmse",
+    "validation": {
+      "persistence": {
+        "rows": 860,
+        "mae": 1.3258604670679845,
+        "rmse": 3.1229027921392394,
+        "r2": 0.9789324737941726
+      },
+      "linear_regression": {
+        "rows": 860,
+        "mae": 1.3338805871840855,
+        "rmse": 3.0655499408868474,
+        "r2": 0.9796991883396572
+      },
+      "decision_tree": {
+        "rows": 860,
+        "mae": 2.5360010254465353,
+        "rmse": 5.547792182619293,
+        "r2": 0.9335129629447207
+      }
+    },
+    "test": {
+      "persistence": {
+        "rows": 862,
+        "mae": 1.2682946287009114,
+        "rmse": 1.6625117209676654,
+        "r2": 0.9686127099306376,
+        "rmse_skill_vs_persistence": 0.0
+      },
+      "linear_regression": {
+        "rows": 862,
+        "mae": 1.30601741326123,
+        "rmse": 1.726629247849903,
+        "r2": 0.9661450188845873,
+        "rmse_skill_vs_persistence": -0.03856666156008681
+      },
+      "decision_tree": {
+        "rows": 862,
+        "mae": 1.5577430476628897,
+        "rmse": 1.9671810100343259,
+        "r2": 0.9560546390436262,
+        "rmse_skill_vs_persistence": -0.18325843073715453
+      }
+    },
+    "selected_model": "linear_regression",
+    "best_parameters": {
+      "linear_regression": {
+        "regParam": 0.1,
+        "elasticNetParam": 0.5
+      },
+      "decision_tree": {
+        "maxDepth": 5,
+        "minInstancesPerNode": 30
+      }
+    }
+  },
+  "verification": {
+    "pytest_passed": 10,
+    "ruff": "passed",
+    "execution_environment": "temporary Linux container, no deployment files"
+  },
+  "interpretation": "Linear regression selected using validation RMSE; persistence has lower test RMSE. No test-based retuning."
+}

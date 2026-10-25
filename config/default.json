@@ -1,0 +1,20 @@
+{
+  "input_path": "../data/raw/oil_data.csv",
+  "output_dir": "../artifacts",
+  "target": "cushing_crude_oil_price",
+  "horizon_sessions": 1,
+  "price_lags": [1, 2, 5, 10],
+  "rolling_windows": [5, 10, 20],
+  "exogenous_lag_sessions": 1,
+  "forward_fill_sessions": 5,
+  "train_fraction": 0.7,
+  "validation_fraction": 0.15,
+  "linear_reg_params": [0.0, 0.1, 1.0],
+  "linear_elastic_net_params": [0.0, 0.5],
+  "tree_depths": [3, 5, 8],
+  "tree_min_instances": [10, 30],
+  "tree_max_bins": 32,
+  "seed": 42,
+  "spark_master": "local[2]",
+  "shuffle_partitions": 4
+}
