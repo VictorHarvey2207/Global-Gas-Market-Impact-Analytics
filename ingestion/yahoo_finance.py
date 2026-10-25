@@ -2,6 +2,9 @@ import yfinance as yf
 
 from producer import publish
 
+START_DATE = "2020-01-01"
+END_DATE = "2026-10-21"
+
 def fetch_and_publish(producer):
     tickers = {
         "^DJI": "Dow Jones",
@@ -11,7 +14,9 @@ def fetch_and_publish(producer):
 
     stocks = yf.download(
         list(tickers),
-        period="14d",
+        # period="14d",
+        start=START_DATE,
+        end=END_DATE,
         interval="1d",
         auto_adjust=True,
         progress=False,

@@ -4,6 +4,9 @@ import requests
 
 from producer import publish
 
+START_DATE = "2020-01-01"
+END_DATE = "2026-10-21"
+
 def fetch_and_publish(producer):
     api_key = "pbCjJGMGQMmMBQGLWjNTHQh7Dp9ncPNwjNtt9qLc"
 
@@ -17,9 +20,21 @@ def fetch_and_publish(producer):
 
     for sid, name in series.items():
         try:
+            # response = requests.get(
+            #     f"https://api.eia.gov/v2/seriesid/{sid}",
+            #     params={"api_key": api_key},
+            #     timeout=30,
+            # )
             response = requests.get(
                 f"https://api.eia.gov/v2/seriesid/{sid}",
-                params={"api_key": api_key},
+                params={
+                    "api_key": api_key,
+                    "start": "2020-01",
+                    "end": "2026-10",
+                    "length": 5000,
+                    "sort[0][column]": "period",
+                    "sort[0][direction]": "asc",
+                },
                 timeout=30,
             )
             response.raise_for_status()
@@ -29,7 +44,7 @@ def fetch_and_publish(producer):
                 print(f"EIA error for {name}: {result}")
                 continue
 
-            for row in result["response"]["data"][-5:]:
+            for row in result["response"]["data"]:
                 value = row.get("value")
 
                 if value is None or value == ".":
