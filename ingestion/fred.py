@@ -6,6 +6,9 @@ import requests
 
 from producer import publish
 
+START_DATE = "2020-01-01"
+END_DATE = "2026-10-21"
+
 def fetch_and_publish(producer):
     series = {
         "DPRIME": "Bank Prime Loan Rate",
@@ -24,9 +27,11 @@ def fetch_and_publish(producer):
                 "https://fred.stlouisfed.org/graph/fredgraph.csv",
                 params={
                     "id": sid,
-                    "cosd": (
-                        date.today() - timedelta(days=14)
-                    ).isoformat(),
+                    # "cosd": (
+                    #     date.today() - timedelta(days=14)
+                    # ).isoformat(),
+                    "cosd": START_DATE,
+                    "coed": END_DATE,
                 },
                 timeout=30,
             )

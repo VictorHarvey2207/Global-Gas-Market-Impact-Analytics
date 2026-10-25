@@ -11,7 +11,7 @@ def fetch_and_publish(producer):
 
     stocks = yf.download(
         list(tickers),
-        period="5d",
+        period="14d",
         interval="1d",
         auto_adjust=True,
         progress=False,
