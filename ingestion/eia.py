@@ -5,7 +5,7 @@ import requests
 from producer import publish
 
 def fetch_and_publish(producer):
-    api_key = os.getenv("pbCjJGMGQMmMBQGLWjNTHQh7Dp9ncPNwjNtt9qLc")
+    api_key = "pbCjJGMGQMmMBQGLWjNTHQh7Dp9ncPNwjNtt9qLc"
 
     series = {
         "PET.RBRTE.D": "Brent Crude Oil",
