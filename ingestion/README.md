@@ -7,6 +7,12 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+Or if you're using conda: 
+```bash
+conda create -n gas_analysis
+conda activate gas_analysis
+
+```
 
 ## 2. Start Kafka and check status
 

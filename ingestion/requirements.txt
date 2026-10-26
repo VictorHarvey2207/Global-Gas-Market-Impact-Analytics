@@ -1,6 +1,6 @@
-kafka-python
 yfinance
 requests
 pandas
-python-dotenv
+pythonkafka-python
+-dotenv
 
