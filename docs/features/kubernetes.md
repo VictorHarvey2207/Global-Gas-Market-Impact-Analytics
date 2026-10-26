@@ -16,7 +16,13 @@ Implement the kubernetes module for the Big Data Engineering pipeline.
 - [ ] Create pull request into main
 
 ## Status
+Sparks: https://spark.apache.org/docs/latest/running-on-kubernetes.html
+Hadoop:
+Kafka:
 
+
+## General Rules
+- Applications need to be packaged into one of the supported container formats in order to be deployed on Kubernetes.
 
 
 
