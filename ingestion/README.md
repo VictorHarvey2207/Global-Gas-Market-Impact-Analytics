@@ -1,3 +1,5 @@
+Project requires: docker-compose, Spark 3.5.6 with Scala 2.12. Kafka connector version must match installed Spark and Scala versions.
+
 Run all this from `ingestion/` directory
 
 ## 1. Install dependencies
@@ -11,7 +13,10 @@ Or if you're using conda:
 ```bash
 conda create -n gas_analysis
 conda activate gas_analysis
-
+conda install --file requirements.txt
+conda install conda-pypi::dotenv --solver rattler
+conda install conda-forge::kafka-python
+conda install conda-pypi::yfinance --solver rattler
 ```
 
 ## 2. Start Kafka and check status
@@ -56,4 +61,3 @@ Run Spark consumer:
 ```bash
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.6 consumer.py
 ```
-Spark 3.5.6 with Scala 2.12. Kafka connector version must match installed Spark and Scala versions.

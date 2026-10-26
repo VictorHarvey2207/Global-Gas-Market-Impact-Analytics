@@ -1,5 +1,5 @@
 yfinance
 requests
 pandas
-pythonkafka-python
-python-dotenv
+kafka-python
+dotenv
