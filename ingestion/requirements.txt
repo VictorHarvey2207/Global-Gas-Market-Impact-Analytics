@@ -2,5 +2,4 @@ yfinance
 requests
 pandas
 pythonkafka-python
--dotenv
-
+python-dotenv
