@@ -1,66 +1,37 @@
-import os
-
 import requests
-
 from producer import publish
 
-START_DATE = "2020-01-01"
-END_DATE = "2026-10-21"
+API_KEY = "pbCjJGMGQMmMBQGLWjNTHQh7Dp9ncPNwjNtt9qLc"
+
+# Same commodities at daily / weekly / monthly frequency. Period formats
+# differ per frequency (YYYY-MM-DD, YYYY-MM-DD for week-ending, YYYY-MM).
+SERIES = {
+    "PET.RBRTE.D": "Brent Crude Oil",
+    "PET.RWTC.D": "Cushing WTI Crude Oil",
+    "NG.RNGWHHD.D": "Henry Hub Natural Gas",
+    "PET.RBRTE.W": "Brent Crude Oil Weekly",
+    "PET.RWTC.W": "Cushing WTI Crude Oil Weekly",
+    "NG.RNGWHHD.W": "Henry Hub Natural Gas Weekly",
+    "PET.RBRTE.M": "Brent Crude Oil Monthly",
+    "PET.RWTC.M": "Cushing WTI Crude Oil Monthly",
+    "NG.RNGWHHD.M": "Henry Hub Natural Gas Monthly",
+}
 
 def fetch_and_publish(producer):
-    api_key = "pbCjJGMGQMmMBQGLWjNTHQh7Dp9ncPNwjNtt9qLc"
-
-    series = {
-        "PET.RBRTE.D": "Brent Crude Oil",
-        "PET.RWTC.D": "Cushing WTI Crude Oil",
-        "NG.RNGWHHD.D": "Henry Hub Natural Gas",
-    }
-
     count = 0
-
-    for sid, name in series.items():
+    for sid, name in SERIES.items():
         try:
-            # response = requests.get(
-            #     f"https://api.eia.gov/v2/seriesid/{sid}",
-            #     params={"api_key": api_key},
-            #     timeout=30,
-            # )
-            response = requests.get(
-                f"https://api.eia.gov/v2/seriesid/{sid}",
-                params={
-                    "api_key": api_key,
-                    "start": "2020-01",
-                    "end": "2026-10",
-                    "length": 5000,
-                    "sort[0][column]": "period",
-                    "sort[0][direction]": "asc",
-                },
-                timeout=30,
-            )
+            response = requests.get(f"https://api.eia.gov/v2/seriesid/{sid}",params={"api_key": API_KEY, "length": 5000},timeout=30)
             response.raise_for_status()
             result = response.json()
-
             if "response" not in result:
                 print(f"EIA error for {name}: {result}")
                 continue
-
-            for row in result["response"]["data"]:
-                value = row.get("value")
-
-                if value is None or value == ".":
-                    continue
-
-                if publish(
-                    producer,
-                    "eia",
-                    name,
-                    row["period"],
-                    value,
-                ):
+            for row in result["response"]["data"]:   # NO null / "." filtering
+                extra = {"unit": row.get("units"),"description": row.get("series-description")}
+                if publish(producer, "eia", name, row.get("period"),row.get("value"), series_id=sid, extra=extra):
                     count += 1
-
         except (requests.RequestException, ValueError) as exc:
             print(f"EIA error for {name}: {exc}")
-
-    print(f"EIA: published {count} observations")
+    print(f"EIA: buffered {count} observations")
     return count
